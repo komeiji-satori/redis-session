@@ -60,7 +60,7 @@ class RediSession {
 		self::$redis->set($session_id, json_encode($data));
 		return true;
 	}
-	
+
 	public function revoke($key) {
 		return self::$redis->delete($key);
 	}
@@ -77,15 +77,20 @@ class RediSession {
 		return $data;
 	}
 	private function GetSessionID() {
-		if (!isset($_COOKIE[self::$cookie_name]) && self::$custom_id == false) {
-			$session_id = md5(uniqid());
-			setcookie(self::$cookie_name, $session_id, time() + self::$expire_time);
-		} else {
-			if (self::$custom_id == true) {
-				$session_id = self::$session_id;
-			} else {
+		switch (self::$custom_id) {
+		case false:
+			if (isset($_COOKIE[self::$cookie_name])) {
 				$session_id = $_COOKIE[self::$cookie_name];
+				self::$session_id = $session_id;
+			} else {
+				$session_id = md5(uniqid());
+				self::$session_id = $session_id;
+				setcookie(self::$cookie_name, $session_id, time() + self::$expire_time);
 			}
+			break;
+		case true:
+			$session_id = self::$session_id;
+			break;
 		}
 		return $session_id;
 	}
