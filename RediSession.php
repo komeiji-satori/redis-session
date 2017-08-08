@@ -5,7 +5,7 @@ class RediSession {
 	private static $expire_time;
 	private static $cookie_name;
 	private static $custom_id;
-	
+
 	public function __construct($ip, $port, $auth = false, $expire_time = 86400, $cookie_name = 'RedisSESSID') {
 		self::$redis = new Redis();
 		self::$redis->connect($ip, $port);
@@ -59,6 +59,10 @@ class RediSession {
 		unset($data[$key]);
 		self::$redis->set($session_id, json_encode($data));
 		return true;
+	}
+	public function revoke($key) {
+		$session_id = $this->GetSessionID();
+		return self::$redis->delete($key);
 	}
 
 	public function get($key) {
