@@ -10,6 +10,9 @@ class RediSession {
 		if ($auth) {
 			self::$redis->auth($auth);
 		}
+		if (!self::$redis->ping()) {
+			return false;
+		}
 		self::$session_id = md5(uniqid());
 		self::$expire_time = $expire_time;
 		self::$cookie_name = $cookie_name;
