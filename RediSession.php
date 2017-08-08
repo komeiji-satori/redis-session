@@ -60,6 +60,7 @@ class RediSession {
 		self::$redis->set($session_id, json_encode($data));
 		return true;
 	}
+	
 	public function revoke($key) {
 		return self::$redis->delete($key);
 	}
