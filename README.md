@@ -32,4 +32,4 @@ $rs = new RediSession('127.0.0.1', 6379,'#pass.word',86400,'RSESSID');
  3. string $rs->get(key)          //获取redis中用户的session key对应的value
  4. bool $rs->unset(key)        //删除redis中用户的session key
  5. array $rs->getAll()          //获取redis中用户的所有session key和value
- 6. string $rs->setid(session id)           //设置指定的session id
+ 6. bool $rs->setid(session id)           //设置指定的session id
