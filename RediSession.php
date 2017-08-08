@@ -19,6 +19,7 @@ class RediSession {
 		self::$expire_time = $expire_time;
 		self::$cookie_name = $cookie_name;
 	}
+
 	public function setid($session_id = false) {
 		if ($session_id == '__init') {
 			self::$custom_id = false;
@@ -30,6 +31,7 @@ class RediSession {
 		}
 
 	}
+
 	public function getid() {
 		$session_id = $this->GetSessionID();
 		return $session_id;
@@ -50,8 +52,8 @@ class RediSession {
 		} else {
 			$data[$key] = $value;
 		}
-		self::$redis->set($session_id, json_encode($data));
-		return true;
+
+		return self::$redis->set($session_id, json_encode($data));
 	}
 
 	public function unset($key) {
@@ -63,8 +65,8 @@ class RediSession {
 			$data = json_decode($data, true);
 		}
 		unset($data[$key]);
-		self::$redis->set($session_id, json_encode($data));
-		return true;
+
+		return self::$redis->set($session_id, json_encode($data));
 	}
 
 	public function revoke($key) {
@@ -82,6 +84,7 @@ class RediSession {
 		$data = json_decode(self::$redis->get($session_id), true);
 		return $data;
 	}
+
 	private function GetSessionID() {
 		switch (self::$custom_id) {
 		case false:
