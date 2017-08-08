@@ -35,7 +35,7 @@ class RediSession {
 		return $session_id;
 	}
 
-	public function set($key, $value) {
+	public function set($key = '', $value = '') {
 		$session_id = $this->GetSessionID();
 		$data = self::$redis->get($session_id);
 		if (!$data) {
@@ -43,7 +43,13 @@ class RediSession {
 		} else {
 			$data = json_decode($data, true);
 		}
-		$data[$key] = $value;
+		if (gettype($key) == 'array') {
+			foreach ($key as $keys => $value) {
+				$data[$keys] = $value;
+			}
+		} else {
+			$data[$key] = $value;
+		}
 		self::$redis->set($session_id, json_encode($data));
 		return true;
 	}

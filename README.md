@@ -29,8 +29,9 @@ $rs = new RediSession('127.0.0.1', 6379,'#pass.word',86400,'RSESSID');
 
  1. string $rs->getid()           //获取用户的redis cookie id
  2. bool $rs->set(key,value)    //设置redis中用户的session key和value
- 3. string $rs->get(key)          //获取redis中用户的session key对应的value
- 4. bool $rs->unset(key)        //删除redis中用户的session key
- 5. array $rs->getAll()          //获取redis中用户的所有session key和value
- 6. bool $rs->setid(session id)           //设置指定的session id
- 7. bool $rs->revoke(session id)     //销毁指定session id
+ 3. bool $rs->set([key=>value,key2=>value2])          //根据数组设置redis中用户的session key和value
+ 4. string $rs->get(key)          //获取redis中用户的session key对应的value
+ 5. bool $rs->unset(key)        //删除redis中用户的session key
+ 6. array $rs->getAll()          //获取redis中用户的所有session key和value
+ 7. bool $rs->setid(session id)           //设置指定的session id
+ 8. bool $rs->revoke(session id)     //销毁指定session id
