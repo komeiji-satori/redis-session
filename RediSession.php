@@ -61,7 +61,6 @@ class RediSession {
 		return true;
 	}
 	public function revoke($key) {
-		$session_id = $this->GetSessionID();
 		return self::$redis->delete($key);
 	}
 
