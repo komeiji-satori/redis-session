@@ -25,7 +25,7 @@ class RediSession {
 		return $session_id;
 	}
 
-	public function set($key = '', $value = '', $type = false) {
+	public function set($key = '', $value = '') {
 		$session_id = $this->GetSessionID();
 		self::$redis->expire($session_id, self::$expire_time);
 		$data = self::$redis->get($session_id);
@@ -41,7 +41,6 @@ class RediSession {
 		} else {
 			$data[$key] = $value;
 		}
-
 		return self::$redis->set($session_id, json_encode($data));
 	}
 
@@ -55,7 +54,6 @@ class RediSession {
 			$data = json_decode($data, true);
 		}
 		unset($data[$key]);
-
 		return self::$redis->set($session_id, json_encode($data));
 	}
 
