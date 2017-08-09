@@ -15,21 +15,8 @@ class RediSession {
 		if (!self::$redis->ping()) {
 			return false;
 		}
-		self::$session_id = $this->setid('__init');
 		self::$expire_time = $expire_time;
 		self::$cookie_name = $cookie_name;
-	}
-
-	public function setid($session_id = false) {
-		if ($session_id == '__init') {
-			self::$custom_id = false;
-			return null;
-		} else {
-			self::$custom_id = true;
-			self::$session_id = $session_id;
-			return true;
-		}
-
 	}
 
 	public function getid() {
@@ -112,20 +99,23 @@ class RediSession {
 	}
 
 	private function GetSessionID() {
-		switch (self::$custom_id) {
-		case false:
-			if (isset($_COOKIE[self::$cookie_name])) {
+		if (isset($_COOKIE[self::$cookie_name])) {
+			if (!self::$redis->exists($_COOKIE[self::$cookie_name])) {
+				$session_id = md5(uniqid());
+				self::$session_id = $session_id;
+				setcookie(self::$cookie_name, $session_id, time() + self::$expire_time);
+			} else {
 				$session_id = $_COOKIE[self::$cookie_name];
 				self::$session_id = $session_id;
+			}
+		} else {
+			if (isset(self::$session_id)) {
+				return self::$session_id;
 			} else {
 				$session_id = md5(uniqid());
 				self::$session_id = $session_id;
 				setcookie(self::$cookie_name, $session_id, time() + self::$expire_time);
 			}
-			break;
-		case true:
-			$session_id = self::$session_id;
-			break;
 		}
 		return $session_id;
 	}
