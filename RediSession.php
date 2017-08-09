@@ -23,7 +23,7 @@ class RediSession {
 	public function setid($session_id = false) {
 		if ($session_id == '__init') {
 			self::$custom_id = false;
-			return md5(uniqid());
+			return null;
 		} else {
 			self::$custom_id = true;
 			self::$session_id = $session_id;
