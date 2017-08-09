@@ -103,6 +103,7 @@ class RediSession {
 			if (!self::$redis->exists($_COOKIE[self::$cookie_name])) {
 				$session_id = md5(uniqid());
 				self::$session_id = $session_id;
+				self::$redis->set($session_id, '');
 				setcookie(self::$cookie_name, $session_id, time() + self::$expire_time);
 			} else {
 				$session_id = $_COOKIE[self::$cookie_name];
