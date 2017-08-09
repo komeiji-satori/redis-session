@@ -38,7 +38,7 @@ class RediSession {
 		return $session_id;
 	}
 
-	public function set($key = '', $value = '') {
+	public function set($key = '', $value = '', $type = false) {
 		$session_id = $this->GetSessionID();
 		self::$redis->expire($session_id, self::$expire_time);
 		$data = self::$redis->get($session_id);
@@ -81,6 +81,27 @@ class RediSession {
 		self::$redis->expire($session_id, self::$expire_time);
 		$data = json_decode(self::$redis->get($session_id), true);
 		return @$data[$key];
+	}
+
+	public function mget($keys_arr = []) {
+		$result = self::$redis->mget($keys_arr);
+		$return = [];
+		foreach ($result as $key => $value) {
+			$return[$keys_arr[$key]] = json_decode($value, true);
+		}
+		return $return;
+	}
+
+	public function mdel($keys_arr = []) {
+		return self::$redis->del($keys_arr);
+	}
+
+	public function mset($data) {
+		$result = [];
+		foreach ($data as $key => $value) {
+			$result[array_values($data[$key])[0]] = self::$redis->set(array_values($data[$key])[0], json_encode($value));
+		}
+		return $result;
 	}
 
 	public function getAll() {
