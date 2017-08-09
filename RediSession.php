@@ -34,11 +34,13 @@ class RediSession {
 
 	public function getid() {
 		$session_id = $this->GetSessionID();
+		self::$redis->expire($session_id, self::$expire_time);
 		return $session_id;
 	}
 
 	public function set($key = '', $value = '') {
 		$session_id = $this->GetSessionID();
+		self::$redis->expire($session_id, self::$expire_time);
 		$data = self::$redis->get($session_id);
 		if (!$data) {
 			$data = [];
@@ -58,6 +60,7 @@ class RediSession {
 
 	public function unset($key) {
 		$session_id = $this->GetSessionID();
+		self::$redis->expire($session_id, self::$expire_time);
 		$data = self::$redis->get($session_id);
 		if (!$data) {
 			$data = [];
@@ -75,12 +78,14 @@ class RediSession {
 
 	public function get($key) {
 		$session_id = $this->GetSessionID();
+		self::$redis->expire($session_id, self::$expire_time);
 		$data = json_decode(self::$redis->get($session_id), true);
 		return @$data[$key];
 	}
 
 	public function getAll() {
 		$session_id = $this->GetSessionID();
+		self::$redis->expire($session_id, self::$expire_time);
 		$data = json_decode(self::$redis->get($session_id), true);
 		return $data;
 	}
