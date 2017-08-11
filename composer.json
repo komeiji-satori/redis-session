@@ -1,0 +1,7 @@
+{
+	"name": "komeiji-satori/redis-session",
+	"description": "基于Redis的用户Session管理",
+	"require": {
+		"php": "^5.6.21 || ^7.0"
+	}
+}
