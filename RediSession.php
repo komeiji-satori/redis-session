@@ -7,7 +7,6 @@ class RediSession {
 	private static $session_id;
 	private static $expire_time;
 	private static $cookie_name;
-	private static $custom_id;
 
 	public function __construct($ip, $port, $auth = false, $expire_time = 86400, $cookie_name = 'RedisSESSID') {
 		self::$redis = new Redis();
