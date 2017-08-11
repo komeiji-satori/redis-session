@@ -1,4 +1,7 @@
 <?php
+namespace RediSession;
+use Redis;
+
 class RediSession {
 	private static $redis;
 	private static $session_id;

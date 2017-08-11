@@ -1,5 +1,7 @@
 <?php
 include 'RediSession.php';
+use RediSession\RediSession;
+
 $rs = new RediSession('127.0.0.1', 6379);
 $rs->set('username', 'SatoriKagurazaka');
 //$rs->set(['username' => 'SatoriMoe', 'password' => md5(123456)]);
